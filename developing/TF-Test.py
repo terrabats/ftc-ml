@@ -7,9 +7,9 @@ from tensorflow import keras
 x = [-1, 0, 1, 2, 3, 4]
 y = [-3, -1, 1, 3, 5, 7]
 
-model = keras.models.Sequential([keras.layers.Dense(units=1, input_shape=[1])])
-model.compile(optimizer='sgd', loss='mean_squared_error')
-model.fit(x, y, epochs=500)
+model = keras.models.Sequential([keras.layers.Dense(1, [1])])
+model.compile('sgd','mean_squared_error')
+model.fit(x, y, 500)
 
 print(model.predict([10]))
 
