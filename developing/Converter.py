@@ -6,14 +6,20 @@ from os.path import isfile, join
 count = 1
 
 def imsToVideo(name):
-    image_folder = 'out_ims'
+    name_of_folder = '2020 07 28 23 58 25'
+    image_folder = f'out_ims/{name_of_folder}'
     video_name = f'out_videos/{name}'
 
     images = [img for img in os.listdir(image_folder) if img.endswith(".png")]
+    timefile = [txt for txt in os.listdir(image_folder) if txt.endswith(".txt")]
+    f = open(os.path.join(image_folder, timefile[0]), "r")
+    fps = 1/float(f.read())
+    # print(fps)
+
     frame = cv2.imread(os.path.join(image_folder, images[0]))
     height, width, layers = frame.shape
 
-    video = cv2.VideoWriter(video_name, 0, 20, (width,height))
+    video = cv2.VideoWriter(video_name, 0, fps, (width,height))
 
     reoims = [None]*10000
     for i in range(len(images)):
@@ -29,7 +35,7 @@ def imsToVideo(name):
 def videoToIms(name):
     global count
     sec = 0
-    frameRate = 0.5
+    frameRate = 0.1
     success = getFrame(sec,name)
     while success:
         count += 1
@@ -44,10 +50,9 @@ def getFrame(sec,name):
     if hasFrames:
         cv2.imwrite("train_ims/" + str(count) + ".png", image)
     return hasFrames
-
-#imsToVideo('video_out.mp4')
+#
+# imsToVideo('video_out1.mp4')
 
 vids = [v for v in os.listdir('train_videos/') if v.endswith(".mp4")]
 for vid in vids:
-    print(vid)
     videoToIms(vid)
