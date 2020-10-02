@@ -35,24 +35,25 @@ def imsToVideo(name):
 def videoToIms(name):
     global count
     sec = 0
-    frameRate = 0.1
+    frameRate = 0.05
+    count = 1
     success = getFrame(sec,name)
     while success:
         count += 1
         sec += frameRate
         sec = round(sec, 2)
         success = getFrame(sec,name)
+
 def getFrame(sec,name):
     global count
-    vidcap = cv2.VideoCapture(f'train_videos/{name}')
+    vidcap = cv2.VideoCapture(f'train_videos/{name}.mp4')
     vidcap.set(cv2.CAP_PROP_POS_MSEC, sec * 1000)
     hasFrames, image = vidcap.read()
     if hasFrames:
-        cv2.imwrite("train_ims/" + str(count) + ".png", image)
+        cv2.imwrite(f'train_ims/{name}/{count}.png', image)
     return hasFrames
 #
 # imsToVideo('video_out1.mp4')
-
-vids = [v for v in os.listdir('train_videos/') if v.endswith(".mp4")]
-for vid in vids:
-    videoToIms(vid)
+videoToIms("1ring")
+videoToIms("3ring")
+videoToIms("0ring")
